@@ -404,30 +404,9 @@ def face_mask_google_mediapipe(
 
     return masks
 
-
-def _crop_to_square(
-    image: Image.Image, com: List[Tuple[int, int]], resize_to: Optional[int] = None
-):
-    cx, cy = com
-    width, height = image.size
-    if width > height:
-        left_possible = max(cx - height / 2, 0)
-        left = min(left_possible, width - height)
-        right = left + height
-        top = 0
-        bottom = height
-    else:
-        left = 0
-        right = width
-        top_possible = max(cy - width / 2, 0)
-        top = min(top_possible, height - width)
-        bottom = top + width
-
-    image = image.crop((left, top, right, bottom))
-
-    if resize_to:
-        image = image.resize((resize_to, resize_to), Image.Resampling.LANCZOS)
-
+def _crop_to_square(image: Image.Image, com: List[Tuple[int, int]], resize_to: Optional[int] = None) -> Image.Image:
+    target_size = (1344, 768)
+    image = image.resize(target_size, Image.Resampling.LANCZOS)
     return image
 
 
